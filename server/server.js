@@ -127,4 +127,28 @@ wss.on('connection', (ws) => {
       console.log('Client disconnected');
     });
   });
+  wss.on('connection', (ws) => {
+    console.log('New client connected');
+  
+    ws.on('message', (message) => {
+      let data;
+      try {
+        data = JSON.parse(message); // Expecting { documentId, content }
+      } catch (err) {
+        console.error('Invalid message format:', err);
+        return;
+      }
+  
+      // Broadcast only to clients editing the same document
+      wss.clients.forEach(client => {
+        if (client !== ws && client.readyState === WebSocket.OPEN && client.documentId === data.documentId) {
+          client.send(JSON.stringify(data));
+        }
+      });
+    });
+  
+    ws.on('close', () => {
+      console.log('Client disconnected');
+    });
+  });
   

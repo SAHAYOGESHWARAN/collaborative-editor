@@ -100,3 +100,31 @@ app.use('/api/documents', documentRoutes);
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+wss.on('connection', (ws) => {
+    console.log('New client connected');
+    
+    ws.on('message', (message) => {
+      console.log('Received:', message);
+      
+      // Parse the message (in case you want to handle document IDs and content)
+      let data;
+      try {
+        data = JSON.parse(message);
+      } catch (e) {
+        console.error('Invalid message format:', e);
+        return;
+      }
+  
+      // Broadcast to all other clients except the sender
+      wss.clients.forEach(client => {
+        if (client !== ws && client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify(data));
+        }
+      });
+    });
+  
+    ws.on('close', () => {
+      console.log('Client disconnected');
+    });
+  });
+  

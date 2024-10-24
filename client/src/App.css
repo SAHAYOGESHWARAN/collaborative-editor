@@ -1,0 +1,61 @@
+.App {
+    font-family: Arial, sans-serif;
+  }
+  
+  .user-list {
+    margin: 20px 0;
+  }
+  
+  .user-list h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .user-list ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .user-list ul li {
+    margin: 5px 0;
+    padding: 5px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+  }
+  
+  .error-message {
+    color: red;
+  }
+  
+  .success-message {
+    color: green;
+  }
+  .highlight {
+    background-color: yellow;
+    display: inline-block; /* Ensure it doesn't disrupt layout */
+  }
+  
+  .editor-container {
+    position: relative;
+  }
+  
+  .highlights {
+    position: absolute;
+    pointer-events: none; /* Allow clicks through the highlights */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .cursor-container {
+    position: relative; /* Required for absolute positioning of cursor indicators */
+  }
+  
+  .cursor-indicator {
+    position: absolute;
+    height: 20px; /* Height of the cursor */
+    width: 2px; /* Width of the cursor */
+    background-color: red; /* Color of the cursor */
+  }
+  

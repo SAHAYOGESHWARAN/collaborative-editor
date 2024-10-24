@@ -151,4 +151,27 @@ wss.on('connection', (ws) => {
       console.log('Client disconnected');
     });
   });
-  
+  const authRoutes = require('./routes/auth');
+const documentRoutes = require('./routes/document');
+
+// Use authentication routes
+app.use('/api/auth', authRoutes);
+
+// Middleware to check JWT
+const authenticateJWT = (req, res, next) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    return res.status(403).json({ message: 'Token required' });
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+    req.user = user;
+    next();
+  });
+};
+
+// Protect document routes with JWT middleware
+app.use('/api/documents', authenticateJWT, documentRoutes);
